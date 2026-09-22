@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}New Class{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h4 class="mb-3"><i class="bi bi-journal-plus me-2"></i>New Class</h4>
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Class Name</label>
+          <input type="text" name="name" class="form-control" placeholder="e.g. B.Sc CS Semester IV" required autofocus>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Section (optional)</label>
+          <input type="text" name="section" class="form-control" placeholder="e.g. Section A">
+        </div>
+        <button type="submit" class="btn btn-primary">Create Class</button>
+        <a href="{{ url_for('classes.dashboard') }}" class="btn btn-link">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Add Student{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4">
+      <h4 class="mb-3"><i class="bi bi-person-badge me-2"></i>Add Student to {{ cls.display_name }}</h4>
+      <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Roll Number</label>
+          <input type="text" name="roll_no" class="form-control" required autofocus>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Reference Face Photos (2–3 recommended, clear front-facing shots)</label>
+          <input type="file" name="photos" class="form-control" accept="image/*" multiple required>
+          <div class="form-text">Each photo must contain exactly one clearly visible face. Up to 5 photos.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Student</button>
+        <a href="{{ url_for('classes.class_detail', class_id=cls.id) }}" class="btn btn-link">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

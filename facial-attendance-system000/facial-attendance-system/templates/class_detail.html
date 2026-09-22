@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ cls.display_name }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h3 class="mb-0">{{ cls.display_name }}</h3>
+    <small class="text-muted">{{ students|length }} student(s) registered</small>
+  </div>
+  <div>
+    <a href="{{ url_for('classes.dashboard') }}" class="btn btn-outline-secondary me-2">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+    <form method="POST" action="{{ url_for('classes.delete_class', class_id=cls.id) }}" class="d-inline"
+          onsubmit="return confirm('Delete this class and all its data?');">
+      <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+    </form>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <a href="{{ url_for('classes.new_student', class_id=cls.id) }}" class="text-decoration-none">
+      <div class="stat-card blue h-100">
+        <i class="bi bi-person-plus-fill fs-3"></i>
+        <div class="mt-2 fw-semibold">Add Student</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-3">
+    <form method="POST" action="{{ url_for('classes.train_class', class_id=cls.id) }}">
+      <button type="submit" class="btn p-0 border-0 w-100 text-start">
+        <div class="stat-card green h-100">
+          <i class="bi bi-cpu-fill fs-3"></i>
+          <div class="mt-2 fw-semibold">{{ 'Retrain' if cls.model_trained else 'Train' }} Recognition Model</div>
+        </div>
+      </button>
+    </form>
+  </div>
+  <div class="col-md-3">
+    <a href="{{ url_for('attendance.upload_photo', class_id=cls.id) }}" class="text-decoration-none">
+      <div class="stat-card red h-100">
+        <i class="bi bi-camera-fill fs-3"></i>
+        <div class="mt-2 fw-semibold">Take Attendance</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-3">
+    <a href="{{ url_for('attendance.report', class_id=cls.id) }}" class="text-decoration-none">
+      <div class="card h-100 d-flex align-items-center justify-content-center text-center">
+        <div>
+          <i class="bi bi-clipboard-data-fill fs-3 text-primary"></i>
+          <div class="mt-2 fw-semibold">Attendance Report</div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+{% if not cls.model_trained and students|length > 0 %}
+<div class="alert alert-warning">
+  <i class="bi bi-exclamation-triangle-fill me-1"></i>
+  Recognition model not trained yet. Click <strong>Train Recognition Model</strong> above before taking attendance.
+</div>
+{% endif %}
+
+<div class="card">
+  <div class="card-header">Student Roster</div>
+  <div class="card-body p-0">
+    {% if students %}
+    <table class="table mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Roll No.</th>
+          <th>Name</th>
+          <th>Reference Photos</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for s in students %}
+        <tr>
+          <td>{{ s.roll_no }}</td>
+          <td>{{ s.name }}</td>
+          <td>
+            {% for p in s.photos %}
+              <img src="{{ url_for('static', filename='uploads/students/' + p.filename) }}" class="student-photo-thumb me-1">
+            {% endfor %}
+          </td>
+          <td class="text-end">
+            <form method="POST" action="{{ url_for('classes.delete_student', student_id=s.id) }}" class="d-inline"
+                  onsubmit="return confirm('Remove this student?');">
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="text-center py-5 text-muted">No students yet. Add your first student to get started.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

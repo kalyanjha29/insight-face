@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Review Attendance{% endblock %}
+{% block content %}
+<h3 class="mb-1"><i class="bi bi-eye-fill me-2"></i>Review Recognized Faces</h3>
+<p class="text-muted">{{ cls.display_name }} — Session date: {{ pending.session_date }}</p>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card p-3">
+      <img src="{{ url_for('static', filename='uploads/classroom/' + pending.annotated_filename) }}" class="face-review-img" alt="Annotated classroom photo">
+      <div class="mt-2 text-muted small">
+        <span class="badge" style="background:#2e8b57;">&nbsp;</span> Recognized &nbsp;
+        <span class="badge" style="background:#c0392b;">&nbsp;</span> Unknown / unmatched face
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <form method="POST" action="{{ url_for('attendance.confirm', class_id=cls.id) }}">
+      <div class="card mb-3">
+        <div class="card-header">Detected Faces ({{ pending.faces|length }})</div>
+        <div class="card-body">
+          {% if pending.faces %}
+            {% for face in pending.faces %}
+            <div class="mb-3">
+              <label class="form-label small text-muted">
+                Face #{{ loop.index }}
+                {% if face.confidence is not none %} — confidence score {{ face.confidence }} (lower is better){% endif %}
+              </label>
+              <select name="face_{{ loop.index0 }}" class="form-select">
+                <option value="unknown" {{ 'selected' if face.student_id is none }}>Unknown — do not mark</option>
+                {% for s in students %}
+                <option value="{{ s.id }}" {{ 'selected' if face.student_id == s.id }}>{{ s.name }} ({{ s.roll_no }})</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted mb-0">No faces were detected in this photo.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if unrecognized_students %}
+      <div class="card mb-3">
+        <div class="card-header">Not Detected — Mark Manually Present?</div>
+        <div class="card-body">
+          <p class="text-muted small">These students weren't matched in the photo. Check any who are actually present.</p>
+          {% for s in unrecognized_students %}
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="manual_present_{{ s.id }}" id="manual_{{ s.id }}">
+            <label class="form-check-label" for="manual_{{ s.id }}">{{ s.name }} ({{ s.roll_no }})</label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <button type="submit" class="btn btn-success w-100">
+        <i class="bi bi-check-circle-fill me-1"></i> Confirm &amp; Save Attendance
+      </button>
+      <a href="{{ url_for('attendance.upload_photo', class_id=cls.id) }}" class="btn btn-link w-100">Re-upload photo</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

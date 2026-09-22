@@ -1,0 +1,63 @@
+.app-navbar {
+  background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+}
+
+body {
+  background-color: #f4f7fb;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+.stat-card {
+  border-radius: 12px;
+  padding: 1.25rem;
+  color: #fff;
+}
+
+.stat-card.blue { background: linear-gradient(135deg, #2a5298, #1e3c72); }
+.stat-card.green { background: linear-gradient(135deg, #2e8b57, #1f5c3a); }
+.stat-card.red { background: linear-gradient(135deg, #c0392b, #8e2417); }
+
+.badge-present {
+  background-color: #2e8b57;
+}
+
+.badge-absent {
+  background-color: #c0392b;
+}
+
+.face-review-img {
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.auth-wrapper {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  max-width: 420px;
+  width: 100%;
+}
+
+.student-photo-thumb {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}

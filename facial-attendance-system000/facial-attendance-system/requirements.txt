@@ -1,0 +1,16 @@
+Flask>=3.0
+Flask-SQLAlchemy>=3.1
+Werkzeug>=3.0
+
+# --- Face Recognition Engine: MTCNN (detection) + FaceNet (recognition) ---
+# tensorflow-cpu keeps this to a ~1GB install instead of pulling in CUDA.
+# Pinned versions below are mutually compatible (numpy 1.x line); newer
+# opencv/scipy default to numpy 2.x, which breaks this tensorflow version.
+
+Flask
+Flask-SQLAlchemy
+Werkzeug
+insightface
+onnxruntime
+opencv-python
+numpy
